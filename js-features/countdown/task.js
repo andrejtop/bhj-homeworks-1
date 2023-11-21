@@ -5,8 +5,9 @@ function countdown() {
   document.getElementById("timer").innerHTML = timer;
 
   if (timer === 0) {
+    clearInterval(timerInterval);
     alert("Вы победили в конкурсе!");
   }
 }
 
-setInterval(countdown, 1000);
+let timerInterval = setInterval(countdown, 1000);
