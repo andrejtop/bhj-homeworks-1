@@ -1,29 +1,30 @@
-let holes = document.querySelectorAll('.hole');
-let deadTag = document.getElementById('dead');
-let lostTag = document.getElementById('lost');
+const spanIdDead = document.getElementById('dead');
+const spanIdLost = document.getElementById('lost');
+const holes = document.querySelectorAll('.hole');
 
-for (let hole of holes) {
-  hole.addEventListener('click', handleUserClick);
-}
-
-function handleUserClick(event) {
-  const tag = event.target;
-  const isMoleHit = tag.classList.contains('hole_has-mole');
-
-  if (isMoleHit) {
-    incrementCounter(deadTag, 10, 'Вы выиграли!');
-  } else {
-    incrementCounter(lostTag, 5, 'Вы проиграли!');
+const checkResult = () => {
+  if (Number(spanIdLost.textContent) === 5 && Number(spanIdDead.textContent) < 10) {
+    alert('Вы проиграли');
+    // Сброс счетчика поражений
+    spanIdLost.textContent = 0;
+    spanIdDead.textContent = 0;
+  } else if (Number(spanIdDead.textContent) === 10) {
+    alert('Вы выиграли');
+    // Сброс счетчика убитых кротов
+    spanIdDead.textContent = 0;
+    spanIdLost.textContent = 0;
   }
-}
+};
 
-function incrementCounter(counterElement, limit, winMessage) {
-  let currentCount = Number(counterElement.textContent);
-  currentCount++;
-
-  if (currentCount > limit) {
-    alert(winMessage);
+const handleClick = (event) => {
+  const hole = event.target;
+  if (hole.classList.contains('hole_has-mole')) {
+    spanIdDead.textContent = Number(spanIdDead.textContent) + 1;
   } else {
-    counterElement.textContent = currentCount;
+    spanIdLost.textContent = Number(spanIdLost.textContent) + 1;
   }
-}
+
+  checkResult();
+};
+
+holes.forEach((hole) => hole.addEventListener('click', handleClick));
